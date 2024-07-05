@@ -1,12 +1,13 @@
 package com.example.IncidentManager.repository;
 
-import java.util.Optional;
+
+import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.example.IncidentManager.Entity.Incident;
 
 public interface IncidentRepository extends JpaRepository<Incident, Integer>{
-    Optional<Incident> findByTitle(String title);
-
+    List<Incident> findByTitle(String title);
+    Incident findByApplicationId(int applicationId);
 }

@@ -24,7 +24,7 @@ public class Incident {
 
     private String title;
     private String description;
-    private String application;
+    private int applicationId;
 
     @Enumerated(EnumType.STRING)
     private StatusType status;
@@ -134,11 +134,18 @@ public class Incident {
         this.solution_description = solution_description;
     }
 
-	public String getApplication() {
-		return application;
+
+	public int getApplicationId() {
+		return applicationId;
 	}
 
-	public void setApplication(String application) {
-		this.application = application;
+
+	public void setApplicationId(int applicationId) {
+		this.applicationId = applicationId;
 	}
+
+
+	
+
+	
 }

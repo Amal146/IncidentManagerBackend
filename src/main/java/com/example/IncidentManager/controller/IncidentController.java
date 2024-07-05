@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.IncidentManager.Entity.Incident;
@@ -45,11 +46,17 @@ public class IncidentController {
 	}
 	
 	@GetMapping("/findByTitle")
-    @ApiOperation(value = "Retrieve one incident by title", response = Incident.class)
-	public Incident findById(@RequestBody String title) {
-		return incidentService.findIncidentByTitle(title);
-	}
+	@ApiOperation(value = "Retrieve incidents by title", response = List.class)
+	public List<Incident> findByTitle(@RequestParam String title) {
+	     return incidentService.findIncidentByTitle(title);
+	 }
 	
+	@GetMapping("/findByAppId")
+	@ApiOperation(value = "Retrieve incidents by application id", response = Incident.class)
+	public Incident findByAppId(@RequestParam int applicationId) {
+	     return incidentService.findIncidentByAppId(applicationId);
+	}
+
 	
 	@PutMapping("/update")
     @ApiOperation(value = "update one incident by id", response = Incident.class)

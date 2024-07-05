@@ -16,17 +16,13 @@ public class IncidentService {
 	
 	// Post Incident
     public Incident saveIncident(Incident incident) {
-        return incidentRepository.save(incident);
+		List<Incident> dbIncident = incidentRepository.findByTitle(incident.getTitle());
+		if(dbIncident.isEmpty()) {
+			return incidentRepository.save(incident);
+		}
+		throw new RuntimeException("Incident exists already");
     }
 
-	// Find Incident By Title
-    public Incident findIncidentByTitle(String title) {
-        Optional<Incident> incident = incidentRepository.findByTitle(title);
-        if (incident.isEmpty()) {
-            throw new RuntimeException("Incident with title '" + title + "' not found");
-        }
-        return incident.get();
-    }
 	
 	//Get Incident By Id
 	public Incident findIncidentId(int id) {
@@ -37,6 +33,17 @@ public class IncidentService {
 		return incident.get();
 	}
 	
+	// Get Incident By Title
+    public List<Incident> findIncidentByTitle(String title) {
+        return incidentRepository.findByTitle(title);
+    }
+	
+    // Get Incident By Application Id
+    public Incident findIncidentByAppId(int applicationId) {
+        return incidentRepository.findByApplicationId(applicationId);
+    }
+    
+    
 	//Get all Incident 
 	public List<Incident> findAll(){
 		return incidentRepository.findAll();
@@ -60,7 +67,7 @@ public class IncidentService {
 		existingIncident.setSeverity(incident.getSeverity());
 		existingIncident.setSolution_description(incident.getSolution_description());
 		existingIncident.setStatus(incident.getStatus());
-		existingIncident.setApplication(incident.getApplication());
+		existingIncident.setApplicationId(incident.getApplicationId());
 
 		
 		return incidentRepository.save(existingIncident);
