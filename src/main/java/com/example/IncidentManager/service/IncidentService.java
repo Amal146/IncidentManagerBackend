@@ -14,10 +14,19 @@ public class IncidentService {
 	@Autowired
 	private IncidentRepository incidentRepository;
 	
-	//Post Incident
-	public Incident saveIncident(Incident incident) {
-		return incidentRepository.save(incident);
-	}
+	// Post Incident
+    public Incident saveIncident(Incident incident) {
+        return incidentRepository.save(incident);
+    }
+
+	// Find Incident By Title
+    public Incident findIncidentByTitle(String title) {
+        Optional<Incident> incident = incidentRepository.findByTitle(title);
+        if (incident.isEmpty()) {
+            throw new RuntimeException("Incident with title '" + title + "' not found");
+        }
+        return incident.get();
+    }
 	
 	//Get Incident By Id
 	public Incident findIncidentId(int id) {
@@ -51,6 +60,8 @@ public class IncidentService {
 		existingIncident.setSeverity(incident.getSeverity());
 		existingIncident.setSolution_description(incident.getSolution_description());
 		existingIncident.setStatus(incident.getStatus());
+		existingIncident.setApplication(incident.getApplication());
+
 		
 		return incidentRepository.save(existingIncident);
 		
