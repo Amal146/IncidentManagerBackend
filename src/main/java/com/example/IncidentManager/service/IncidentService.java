@@ -15,14 +15,23 @@ public class IncidentService {
 	private IncidentRepository incidentRepository;
 	
 	// Post Incident
-    public Incident saveIncident(Incident incident) {
-		List<Incident> dbIncident = incidentRepository.findByTitle(incident.getTitle());
-		if(dbIncident.isEmpty()) {
-			return incidentRepository.save(incident);
-		}
-		throw new RuntimeException("Incident exists already");
-    }
+	public Incident saveIncident(Incident incident) {
 
+
+	    List<Incident> dbIncident = incidentRepository.findByDescription(incident.getDescription());
+	    if (dbIncident.isEmpty()) {
+	        return incidentRepository.save(incident);
+	    }
+
+	    throw new RuntimeException("Incident already exists");
+	}
+
+
+	// GET Contributors By Incident
+	public List<Object[]> findContributorsByIncident(int applicationId) {      
+        return incidentRepository.findContributorsByIncident(applicationId);
+    }
+	
 	
 	//Get Incident By Id
 	public Incident findIncidentId(int id) {
@@ -50,29 +59,29 @@ public class IncidentService {
 	}
 	
 	
-	//Update Incident By Id
-	public Incident updateIncident(Incident incident) {
-		Optional<Incident> dbIncident = incidentRepository.findById(incident.getId());
-		if(dbIncident.isEmpty()) {
-			throw new RuntimeException("Incident not Found");
-		}
-		
-		Incident existingIncident = dbIncident.get();	
-		existingIncident.setTitle(incident.getTitle());
-		existingIncident.setDescription(incident.getDescription());
-		existingIncident.setReported_at(incident.getReported_at());
-		existingIncident.setReported_by(incident.getReported_by());
-		existingIncident.setResolved_at(incident.getResolved_at());
-		existingIncident.setResolved_by(incident.getResolved_by());
-		existingIncident.setSeverity(incident.getSeverity());
-		existingIncident.setSolution_description(incident.getSolution_description());
-		existingIncident.setStatus(incident.getStatus());
-		existingIncident.setApplicationId(incident.getApplicationId());
-
-		
-		return incidentRepository.save(existingIncident);
-		
+	// Update Incident By Id
+	public Incident updateIncident(int id, Incident incident) {
+	    Optional<Incident> dbIncident = incidentRepository.findById(id);
+	    if (dbIncident.isEmpty()) {
+	        throw new RuntimeException("Incident not Found");
+	    }
+	    
+	    Incident existingIncident = dbIncident.get();
+	    
+	    existingIncident.setTitle(incident.getTitle());
+	    existingIncident.setDescription(incident.getDescription());
+	    existingIncident.setReportedAt(incident.getReportedAt());
+	    existingIncident.setResolvedAt(incident.getResolvedAt());
+	    existingIncident.setSolutionDescription(incident.getSolutionDescription());
+	    existingIncident.setStatus(incident.getStatus());
+	    existingIncident.setSeverity(incident.getSeverity());
+	    
+	   
+	   
+	    
+	    return incidentRepository.save(existingIncident);
 	}
+	
 	
 	//Delete Incident By Id
 	public void deleteIncident(int id) {

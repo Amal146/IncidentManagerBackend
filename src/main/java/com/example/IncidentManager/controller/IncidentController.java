@@ -3,8 +3,10 @@ package com.example.IncidentManager.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,51 +23,58 @@ import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping("/api")
+@CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*")
 @Api(value = "Incident API", description = "CRUD operations for Incident")
 public class IncidentController {
 	@Autowired
 	private IncidentService incidentService;
 	
     @ApiOperation(value = "Add one incident", response = Incident.class)
-	@PostMapping("/save")
+	@PostMapping("/saveIncident")
 	public Incident save(@RequestBody Incident incident) {
 		return incidentService.saveIncident(incident);
 	}
 	
     
-	@GetMapping("/findAll")
+	@GetMapping("/findAllIncidents")
     @ApiOperation(value = "Retrieve all incidents", response = List.class)
 	public List<Incident> findAll() {
 		return  incidentService.findAll();
 	}
 	
-	@GetMapping("/findById")
+	@GetMapping("/findContributorsById")
+    @ApiOperation(value = "Retrieve contributors by incident", response = String.class)
+    public List<Object[]> findContributorsByIncidentId(@RequestParam int id) {
+        return incidentService.findContributorsByIncident(id);
+    }
+	
+	@GetMapping("/findIcidentById")
     @ApiOperation(value = "Retrieve one incident by id", response = Incident.class)
 	public Incident findById(@RequestBody int id) {
 		return incidentService.findIncidentId(id);
 	}
 	
-	@GetMapping("/findByTitle")
+	@GetMapping("/findIncidentByTitle")
 	@ApiOperation(value = "Retrieve incidents by title", response = List.class)
 	public List<Incident> findByTitle(@RequestParam String title) {
 	     return incidentService.findIncidentByTitle(title);
 	 }
 	
-	@GetMapping("/findByAppId")
+	@GetMapping("/findIncidentByAppId")
 	@ApiOperation(value = "Retrieve incidents by application id", response = Incident.class)
-	public Incident findByAppId(@RequestParam int applicationId) {
-	     return incidentService.findIncidentByAppId(applicationId);
+	public Incident findByAppId(@RequestParam int application_id) {
+	     return incidentService.findIncidentByAppId(application_id);
 	}
 
 	
-	@PutMapping("/update")
+	@PutMapping("/updateIncident/{id}")
     @ApiOperation(value = "update one incident by id", response = Incident.class)
-	public Incident update(@RequestBody Incident incident) {
-		return incidentService.updateIncident(incident);
+	public Incident update(@PathVariable("id") int id, @RequestBody Incident incident) {
+		return incidentService.updateIncident(id , incident);
 	}
 	
 	
-	@DeleteMapping("/delete")
+	@DeleteMapping("/deleteIncident")
     @ApiOperation(value = "delete one incident by id")
 	public void delete(@RequestBody int id) {
 		incidentService.deleteIncident(id);
