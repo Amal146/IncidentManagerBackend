@@ -42,7 +42,7 @@ public class IncidentController {
 		return  incidentService.findAll();
 	}
 	
-	@GetMapping("/findContributorsById")
+	@GetMapping("/findContributorsByIncidentId")
     @ApiOperation(value = "Retrieve contributors by incident", response = String.class)
     public List<Object[]> findContributorsByIncidentId(@RequestParam int id) {
         return incidentService.findContributorsByIncident(id);
@@ -50,7 +50,7 @@ public class IncidentController {
 	
 	@GetMapping("/findIcidentById")
     @ApiOperation(value = "Retrieve one incident by id", response = Incident.class)
-	public Incident findById(@RequestBody int id) {
+	public Incident findById(@RequestParam int id) {
 		return incidentService.findIncidentId(id);
 	}
 	
@@ -62,7 +62,7 @@ public class IncidentController {
 	
 	@GetMapping("/findIncidentByAppId")
 	@ApiOperation(value = "Retrieve incidents by application id", response = Incident.class)
-	public Incident findByAppId(@RequestParam int application_id) {
+	public List<Incident> findByAppId(@RequestParam int application_id) {
 	     return incidentService.findIncidentByAppId(application_id);
 	}
 
@@ -76,7 +76,7 @@ public class IncidentController {
 	
 	@DeleteMapping("/deleteIncident")
     @ApiOperation(value = "delete one incident by id")
-	public void delete(@RequestBody int id) {
+	public void delete(@RequestParam int id) {
 		incidentService.deleteIncident(id);
 	}
 }

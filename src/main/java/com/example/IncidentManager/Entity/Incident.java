@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -56,17 +57,14 @@ public class Incident implements Serializable {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "application_id", referencedColumnName = "id")
-	@JsonBackReference(value = "incident-application")
 	private Application application;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "reporter_id", referencedColumnName = "id")
-	@JsonBackReference(value = "incident-reportedBy")
 	private User reportedBy;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "resolver_id", referencedColumnName = "id")
-	@JsonBackReference(value = "incident-resolvedBy")
 	private User resolvedBy;
 
 	public int getId() {
@@ -131,6 +129,14 @@ public class Incident implements Serializable {
 
 	public void setApplication(Application application) {
 		this.application = application;
+	}
+	
+	public void setReportedBy(User reporter) {
+		this.reportedBy = reporter;
+	}
+	
+	public void setResolvedBy(User resolver) {
+		this.resolvedBy = resolver;
 	}
 
 	public User getReportedBy() {

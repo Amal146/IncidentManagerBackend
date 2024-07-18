@@ -24,7 +24,7 @@ public class ApplicationService {
 		Optional<Application> application = applicationRepository.findById(id);
 		if (application.isEmpty()) {
 			throw new RuntimeException("Application not found") ;
-		}
+		} 
 		return application.get();	
 	}
 	

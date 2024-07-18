@@ -60,8 +60,10 @@ public class UserService {
 		User existingUser = dbUser.get();
 		
 		existingUser.setEmail(user.getEmail());
+		existingUser.setFirstName(user.getFirstName());
+		existingUser.setLastName(user.getLastName());
 		existingUser.setPassword(user.getPassword());
-		existingUser.setRole(user.getRole());
+		existingUser.setUsername(user.getUsername());
 		
 		return userRepository.save(existingUser);
 		

@@ -1,5 +1,6 @@
 package com.example.IncidentManager.Entity;
 
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,10 +19,11 @@ public class Application {
 	private Integer id;
 	
 	private String name;
-
+	
 	public void setId(int id) {
 		this.id = id;
 	}
+	
 	public int getId() {
 		return id;
 	}

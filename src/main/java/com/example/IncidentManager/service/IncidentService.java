@@ -6,24 +6,29 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.IncidentManager.Entity.Application;
 import com.example.IncidentManager.Entity.Incident;
+import com.example.IncidentManager.Entity.User;
+import com.example.IncidentManager.repository.ApplicationRepository;
 import com.example.IncidentManager.repository.IncidentRepository;
+import com.example.IncidentManager.repository.UserRepository;
 
 @Service
 public class IncidentService {
 	@Autowired
 	private IncidentRepository incidentRepository;
 	
+	 @Autowired
+	 private ApplicationRepository applicationRepository;
+	 
+	 @Autowired
+	 private UserRepository userRepository;
+	 
+	
 	// Post Incident
 	public Incident saveIncident(Incident incident) {
 
-
-	    List<Incident> dbIncident = incidentRepository.findByDescription(incident.getDescription());
-	    if (dbIncident.isEmpty()) {
 	        return incidentRepository.save(incident);
-	    }
-
-	    throw new RuntimeException("Incident already exists");
 	}
 
 
@@ -48,7 +53,7 @@ public class IncidentService {
     }
 	
     // Get Incident By Application Id
-    public Incident findIncidentByAppId(int applicationId) {
+    public  List<Incident>  findIncidentByAppId(int applicationId) {
         return incidentRepository.findByApplicationId(applicationId);
     }
     
@@ -76,7 +81,22 @@ public class IncidentService {
 	    existingIncident.setStatus(incident.getStatus());
 	    existingIncident.setSeverity(incident.getSeverity());
 	    
-	   
+	    // Fetch application entity from database using its id
+        Application application = applicationRepository.findById(incident.getApplication().getId()).orElseThrow();
+        // Set the application entity to the incident
+        existingIncident.setApplication(application);
+        
+        // Fetch reportedBy user entity from database using its id
+        User reportedBy = userRepository.findById(incident.getReportedBy().getId()).orElseThrow();
+        
+        // Set the reportedBy user entity to the incident
+        existingIncident.setReportedBy(reportedBy);
+        
+        // Fetch resolvedBy user entity from database using its id
+        User resolvedBy = userRepository.findById(incident.getResolvedBy().getId()).orElseThrow();
+        
+        // Set the resolvedBy user entity to the incident
+        existingIncident.setResolvedBy(resolvedBy);
 	   
 	    
 	    return incidentRepository.save(existingIncident);

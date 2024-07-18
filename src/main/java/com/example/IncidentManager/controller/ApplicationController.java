@@ -6,11 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.IncidentManager.Entity.Application;
@@ -42,21 +42,21 @@ public class ApplicationController {
 	
 	@GetMapping("/findAppById")
     @ApiOperation(value = "Retrieve one Application by id", response = Application.class)
-	public Application findById(@RequestBody int id) {
+	public Application findById(@RequestParam int id) {
 		return applicationService.findApplicationById(id);
 	}
 	
 	
 	@PutMapping("/updateApplication/{id}")
     @ApiOperation(value = "Update an Application by id", response = Application.class)
-    public Application update(@PathVariable("id") int id, @RequestBody Application updatedApplication) {
+    public Application update(@RequestParam int id, @RequestBody Application updatedApplication) {
         return applicationService.updateApplication(id, updatedApplication);
     }
 	
 	
 	@DeleteMapping("/deleteApplication")
     @ApiOperation(value = "delete one Application by id")
-	public void delete(@RequestBody int id) {
+	public void delete(@RequestParam int id) {
 		applicationService.deleteApplication(id);
 	}
 	
