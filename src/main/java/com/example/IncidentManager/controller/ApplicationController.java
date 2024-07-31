@@ -3,6 +3,7 @@ package com.example.IncidentManager.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.IncidentManager.Entity.Application;
+import com.example.IncidentManager.payload.response.MessageResponse;
 import com.example.IncidentManager.service.ApplicationService;
 
 import io.swagger.annotations.Api;
@@ -46,6 +48,12 @@ public class ApplicationController {
 		return applicationService.findApplicationById(id);
 	}
 	
+	@GetMapping("/findAppByManagerId")
+    @ApiOperation(value = "Retrieve one Application by manager id", response = Application.class)
+	public List<Application> findByManagerId(@RequestParam int id) {
+		return applicationService.findAppByManagerId(id);
+	}
+	
 	
 	@PutMapping("/updateApplication/{id}")
     @ApiOperation(value = "Update an Application by id", response = Application.class)
@@ -56,8 +64,9 @@ public class ApplicationController {
 	
 	@DeleteMapping("/deleteApplication")
     @ApiOperation(value = "delete one Application by id")
-	public void delete(@RequestParam int id) {
+	public ResponseEntity<MessageResponse> delete(@RequestParam int id) {
 		applicationService.deleteApplication(id);
+		return ResponseEntity.ok(new MessageResponse("App deleted successfully!"));
 	}
 	
 }

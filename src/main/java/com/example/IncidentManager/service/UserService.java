@@ -23,6 +23,11 @@ public class UserService {
 		throw new RuntimeException("Email already used ");
 	}
 	
+	//GET Users By Role id
+	public List<User> getUsersByRole(int roleId) {
+		return userRepository.findUsersByRoleId(roleId);
+	}
+	
 	
 	// GET User By id 
 	public User getUserById(int id) {
@@ -78,5 +83,10 @@ public class UserService {
 			userRepository.delete(dbUser.get());
 	}
 	
+	// Check If User exists by user Id and Role Id 
+	
+	public boolean existsByUserIdAndRoleId(Integer userId, Integer roleId) {
+        return userRepository.existsByUserIdAndRoleId(userId, roleId);
+    }
 
 }

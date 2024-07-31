@@ -54,6 +54,12 @@ public class IncidentController {
 		return incidentService.findIncidentId(id);
 	}
 	
+	@GetMapping("/findIcidentByIdResolver")
+    @ApiOperation(value = "Retrieve incidents by resolver id", response = List.class)
+	public List<Incident> getIncidentsByResolver(@RequestParam Integer resolverId) {
+		return incidentService.getIncidentsByResolverId(resolverId);
+	}
+	
 	@GetMapping("/findIncidentByTitle")
 	@ApiOperation(value = "Retrieve incidents by title", response = List.class)
 	public List<Incident> findByTitle(@RequestParam String title) {
@@ -61,7 +67,7 @@ public class IncidentController {
 	 }
 	
 	@GetMapping("/findIncidentByAppId")
-	@ApiOperation(value = "Retrieve incidents by application id", response = Incident.class)
+	@ApiOperation(value = "Retrieve incidents by application id", response = List.class)
 	public List<Incident> findByAppId(@RequestParam int application_id) {
 	     return incidentService.findIncidentByAppId(application_id);
 	}

@@ -63,6 +63,10 @@ public class IncidentService {
 		return incidentRepository.findAll();
 	}
 	
+	//GET incident by resolver id 
+	public List<Incident> getIncidentsByResolverId(Integer resolverId) {
+        return incidentRepository.findByResolverId(resolverId);
+    }
 	
 	// Update Incident By Id
 	public Incident updateIncident(int id, Incident incident) {

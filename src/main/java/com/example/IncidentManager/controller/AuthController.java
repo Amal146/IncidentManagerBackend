@@ -2,10 +2,12 @@ package com.example.IncidentManager.controller;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -30,6 +32,8 @@ import com.example.IncidentManager.repository.UserRepository;
 import com.example.IncidentManager.security.jwt.JwtUtils;
 import com.example.IncidentManager.security.services.UserDetailsImpl;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -53,9 +57,19 @@ public class AuthController {
 
   @PostMapping("/signin")
   public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
-
+    
+	  Optional<User> userOptional = userRepository.findByEmail(loginRequest.getEmail());
+	    
+	    if (!userOptional.isPresent()) {
+	        return ResponseEntity
+	                .status(HttpStatus.NOT_FOUND)
+	                .body("No user found with that email.");
+	    }
+	    
+	    String username = userOptional.get().getUsername();
+	    
     Authentication authentication = authenticationManager.authenticate(
-        new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+        new UsernamePasswordAuthenticationToken(username, loginRequest.getPassword()));
 
     SecurityContextHolder.getContext().setAuthentication(authentication);
     String jwt = jwtUtils.generateJwtToken(authentication);
@@ -71,6 +85,8 @@ public class AuthController {
                          userDetails.getEmail(), 
                          roles));
   }
+  
+
 
   @PostMapping("/signup")
   public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {

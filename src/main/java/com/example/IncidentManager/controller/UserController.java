@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -68,4 +69,15 @@ public class UserController {
 		userService.deleteUser(id);
 		System.out.println("User deleted successfully");
 	}
+	
+	
+	 @GetMapping("/exists/userRole")
+	 public boolean existsByUserIdAndRoleId(@RequestParam Integer userId, @RequestParam Integer roleId) {
+        return userService.existsByUserIdAndRoleId(userId, roleId);
+     }
+	 
+	 @GetMapping("/UsersByRoleId")
+	 public List<User> getUsersByRole(@RequestParam Integer roleId) {
+			return userService.getUsersByRole(roleId);
+		}
 }

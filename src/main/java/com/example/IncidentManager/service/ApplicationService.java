@@ -1,5 +1,6 @@
 package com.example.IncidentManager.service;
 
+import java.io.Console;
 import java.util.List;
 import java.util.Optional;
 
@@ -8,14 +9,24 @@ import org.springframework.stereotype.Service;
 
 import com.example.IncidentManager.Entity.Application;
 import com.example.IncidentManager.repository.ApplicationRepository;
+import com.example.IncidentManager.repository.UserRepository;
 
 @Service
 public class ApplicationService {
 	@Autowired
 	private ApplicationRepository applicationRepository;
 	
+	@Autowired
+	private UserRepository userRepository ;
+	
 	// POST Application
 	public Application saveApplication(Application application) {
+
+		if (application.getManagerId() != null) {
+        	if (!(userRepository.existsByUserIdAndRoleId(application.getManagerId(), 2))) {
+            	throw new RuntimeException("no manager with that id is found!");
+        	}
+        }
 		return applicationRepository.save(application);
 	}
 	
@@ -25,7 +36,15 @@ public class ApplicationService {
 		if (application.isEmpty()) {
 			throw new RuntimeException("Application not found") ;
 		} 
+		
 		return application.get();	
+	}
+	
+	
+	//GET Application  by ManagerId 
+	public List<Application> findAppByManagerId(int id) {
+		List<Application> apps = applicationRepository.findByManagerId(id);
+		return apps;
 	}
 	
 	
@@ -47,7 +66,17 @@ public class ApplicationService {
         if (updatedApplication.getName() != null) {
             existingApp.setName(updatedApplication.getName());
         }
+        
+        if (updatedApplication.getManagerId() != null) {
+        	if (userRepository.existsByUserIdAndRoleId(updatedApplication.getManagerId(), 2)) {
+                existingApp.setManagerId(updatedApplication.getManagerId());
+                throw new RuntimeException( "anwser" + userRepository.existsByUserIdAndRoleId(updatedApplication.getManagerId(), 2));
 
+        	}else {
+            	throw new RuntimeException("no manager with that id is found!");
+            }
+        }
+        
         // Save and return the updated application
         return applicationRepository.save(existingApp);
     }

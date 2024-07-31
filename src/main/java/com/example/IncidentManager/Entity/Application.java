@@ -1,6 +1,7 @@
 package com.example.IncidentManager.Entity;
 
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,6 +21,17 @@ public class Application {
 	
 	private String name;
 	
+	@Column(name = "manager_id")
+	private Integer managerId ;
+	
+	public Integer getManagerId() {
+		return managerId;
+	}
+
+	public void setManagerId(Integer managerId) {
+		this.managerId = managerId;
+	}
+
 	public void setId(int id) {
 		this.id = id;
 	}
