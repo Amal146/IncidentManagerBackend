@@ -111,18 +111,17 @@ public class AuthController {
       
       // Log the created user
       System.out.println("User before saving: " + user);
-      
-      
-
 
       Set<String> strRoles = signUpRequest.getRole();
       Set<Role> roles = new HashSet<>();
 
       if (strRoles == null) {
+          System.out.println("No roles provided, defaulting to USER role.");
           Role userRole = roleRepository.findByName(ERole.ROLE_USER)
                   .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
           roles.add(userRole);
       } else {
+          System.out.println("Roles provided: " + strRoles);
           strRoles.forEach(role -> {
               switch (role) {
                   case "admin":
@@ -135,6 +134,11 @@ public class AuthController {
                               .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                       roles.add(modRole);
                       break;
+                  case "test":
+                      Role testRole = roleRepository.findByName(ERole.ROLE_TESTER)
+                              .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                      roles.add(testRole);
+                      break;
                   default:
                       Role userRole = roleRepository.findByName(ERole.ROLE_USER)
                               .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
@@ -143,10 +147,10 @@ public class AuthController {
           });
       }
 
+      System.out.println("Roles assigned: " + roles);
       user.setRoles(roles);
       userRepository.save(user);
 
       return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
   }
 }
-

@@ -24,7 +24,8 @@ public void setName(ERole name) {
 public enum ERole {
 	    ROLE_USER,
 	    ROLE_MODERATOR,
-	    ROLE_ADMIN
+	    ROLE_ADMIN,
+	    ROLE_TESTER
 	}
 
   public Role() {

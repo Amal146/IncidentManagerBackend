@@ -48,7 +48,7 @@ public class Incident implements Serializable {
 	private String solutionDescription;
 
 	public enum StatusType {
-		Open, In_Progress, Resolved
+		Open, In_Progress, Resolved , Readytotest , Closed
 	}
 
 	public enum SeverityType {

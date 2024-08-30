@@ -62,6 +62,9 @@ public class WebSecurityConfig {
             .authorizeHttpRequests(auth ->
                 auth.requestMatchers("/api/auth/**").permitAll()
                     .requestMatchers("/api/test/**").permitAll()
+                    .requestMatchers("/process").permitAll()
+                    .requestMatchers("/api/incidents/predict").anonymous()
+                    .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()  // Permit access to Swagger
                     .anyRequest().authenticated()
             );
 
@@ -70,4 +73,5 @@ public class WebSecurityConfig {
 
         return http.build();
     }
+
 }

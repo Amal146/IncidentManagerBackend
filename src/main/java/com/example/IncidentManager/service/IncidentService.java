@@ -4,10 +4,14 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.example.IncidentManager.Entity.Application;
 import com.example.IncidentManager.Entity.Incident;
+import com.example.IncidentManager.Entity.Incident.StatusType;
 import com.example.IncidentManager.Entity.User;
 import com.example.IncidentManager.repository.ApplicationRepository;
 import com.example.IncidentManager.repository.IncidentRepository;
@@ -62,6 +66,27 @@ public class IncidentService {
 	public List<Incident> findAll(){
 		return incidentRepository.findAll();
 	}
+	
+	// Get all Incidents Per Page with optional status filter
+	public Page<Incident> findAllPerPage(int pageNo, int pageSize, Optional<String> status) {
+	    Pageable pageable = PageRequest.of(pageNo, pageSize);
+	    StatusType statusType = null;
+
+	    if (status.isPresent() && !status.get().isEmpty()) {
+	        try {
+	            statusType = StatusType.valueOf(status.get());
+	        } catch (IllegalArgumentException e) {
+	        }
+	    }
+
+	    if (statusType != null) {
+	        return incidentRepository.findAllByStatus(statusType, pageable);
+	    } else {
+	        return incidentRepository.findAll(pageable);
+	    }
+	}
+
+
 	
 	//GET incident by resolver id 
 	public List<Incident> getIncidentsByResolverId(Integer resolverId) {
